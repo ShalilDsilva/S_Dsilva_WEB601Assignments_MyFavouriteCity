@@ -1,0 +1,7 @@
+<div *ngFor="let content of contentArray; let i = index" [class.first-card]="i === 0">
+  <app-content-card
+    [content]="content"
+    [index]="i"
+    (imageClick)="handleImageClick(content.id, content.title)"
+  ></app-content-card>
+</div>
