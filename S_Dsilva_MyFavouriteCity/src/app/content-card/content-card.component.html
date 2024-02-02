@@ -1,4 +1,4 @@
-<div class="content-card" [style.border]="index === 0 ? '2px solid black' : '1px solid black'">
+<div class="content-card" [style.border]="index === 0 ? '2px solid black' : '1px solid black'" [class.highlighted]="content.highlight">
   <h2>{{ content.title }}</h2>
   <img *ngIf="content.imgURL" [src]="content.imgURL" (click)="onImageClick()" alt="Image">
   <p *ngIf="content.description">Description: {{ content.description }}</p>

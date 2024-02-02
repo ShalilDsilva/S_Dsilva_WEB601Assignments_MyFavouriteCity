@@ -1,7 +1,18 @@
-<div *ngFor="let content of contentArray; let i = index" [class.first-card]="i === 0">
-  <app-content-card
-    [content]="content"
-    [index]="i"
-    (imageClick)="handleImageClick(content.id, content.title)"
-  ></app-content-card>
+<input type="text" [(ngModel)]="searchTitle" placeholder="Enter Content Title">
+<button (click)="searchContent()">Search</button>
+<div *ngFor="let type of typeList">
+  <h2>{{ type || 'No Type' }}</h2>
+  <div *ngFor="let content of contentArray | typeFilter: type"
+  >
+    <app-content-card
+      [content]="content"
+      [index]="contentArray.indexOf(content)"
+      (imageClick)="handleImageClick(content.id, content.title)"
+      [style.color]="content.type === 'City' ? 'green' : (content.type === 'Country' ? 'red' : 'blue')"
+      ></app-content-card>
+  </div>
+</div>
+
+<div [style.color]="searchMessageColor">
+  {{ searchMessage }}
 </div>
