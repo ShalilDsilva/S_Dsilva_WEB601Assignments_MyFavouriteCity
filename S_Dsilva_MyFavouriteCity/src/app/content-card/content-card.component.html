@@ -1,8 +1,13 @@
-<div class="content-card" [style.border]="index === 0 ? '2px solid black' : '1px solid black'" [class.highlighted]="content.highlight">
+<div class="content-card" appHoverAffect [style]="'border'" [style.border]="index === 0 ? '2px solid black' : '1px solid black'" [class.highlighted]="content.highlight">
   <h2>{{ content.title }}</h2>
-  <img *ngIf="content.imgURL" [src]="content.imgURL" (click)="onImageClick()" alt="Image">
+  <img *ngIf="content.imgURL; else defaultImage" [src]="content.imgURL" (click)="onImageClick()" alt="Image">
+  <ng-template #defaultImage>
+    <img src="../../assets/amsterdam.webp" (click)="onImageClick()" alt="Default Image"/>
+  </ng-template>
   <p *ngIf="content.description">Description: {{ content.description }}</p>
   <p *ngIf="content.creator">Creator: {{ content.creator }}</p>
-  <p *ngIf="content.type">Type: {{ content.type }}</p>
-  <p *ngIf="content.tags && content.tags.length > 0">Tags: {{ content.tags.join(', ') }}</p>
+  <p *ngIf="content.type">Type: <span appHoverAffect [style]="'underline'">{{ content.type }}</span></p>
+  <p *ngIf="content.tags && content.tags.length > 0">Tags: <span *ngFor="let tag of content.tags; let last = last" appHoverAffect [style]="'bold'">{{ tag }}{{ !last ? ', ' : '' }}</span>
+  
+  </p>
 </div>
