@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { Content } from '../helper-files/content-interface';
+import { CreateContentComponent } from '../create-content/create-content.component';
 
 @Component({
   selector: 'app-content-list',
@@ -22,7 +23,9 @@ export class ContentListComponent implements OnInit {
   searchMessage: string = '';
   searchMessageColor: string = '';
 
-  constructor() {}
+  @ViewChild(CreateContentComponent) createContentComponent: CreateContentComponent | undefined;
+
+  constructor(private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
     this.extractTypes();
@@ -57,4 +60,36 @@ export class ContentListComponent implements OnInit {
   handleImageClick(id: number, title: string): void {
     console.log(`Clicked on image with ID: ${id}, Title: ${title}`);
   }
+
+  handleContentAdded(newContent: Content): void {
+    const clonedContent = { ...newContent }; // Clone the content
+    this.addContentPromise(clonedContent)
+      .then(() => {
+        console.log('Content added successfully:', clonedContent.title);
+        this.cdr.detectChanges(); // Trigger change detection
+      })
+      .catch(() => console.error('Failed to add content:', clonedContent.title));
+  }
+  
+  
+  addContentPromise(newContent: Content): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      if (this.validateContent(newContent)) {
+        this.contentArray.push(newContent);
+        resolve();
+      } else {
+        reject();
+      }
+    });
+  }
+  
+  validateContent(newContent: Content): boolean {
+    if (!newContent.title || !newContent.description || !newContent.creator) {
+      console.error('Required fields are missing.');
+      return false;
+    }
+    return true;
+  }
+  
+  
 }
