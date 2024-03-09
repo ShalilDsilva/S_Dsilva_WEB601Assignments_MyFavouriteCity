@@ -5,4 +5,16 @@
   <h2>My Top Cities</h2>
 </div>
 
+<div class="content-card-wrapper" *ngIf="singleContent">
+  <app-content-card [content]="singleContent"></app-content-card>
+</div>
+
+<app-messages></app-messages>
+<br>
+<div class="form">
+  <label for="idInput">Enter ID Number:</label>
+  <input type="number" id="idInput" [(ngModel)]="inputId">
+  <button (click)="retrieveContentById()">Retrieve Content</button>
+</div>
+<br>
 <app-content-list></app-content-list>
