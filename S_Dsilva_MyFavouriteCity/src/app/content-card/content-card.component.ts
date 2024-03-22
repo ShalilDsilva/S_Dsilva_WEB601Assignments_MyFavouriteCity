@@ -11,8 +11,13 @@ export class ContentCardComponent {
   @Input() index!: number;
   @Output() imageClick: EventEmitter<{ id: number; title: string }> = new EventEmitter();
 
+  // onImageClick(): void {
+  //   this.imageClick.emit({ id: this.content.id, title: this.content.title });
+  // }
   onImageClick(): void {
-    this.imageClick.emit({ id: this.content.id, title: this.content.title });
-  }
-  
+    if (this.content.id !== null) {
+        this.imageClick.emit({ id: this.content.id, title: this.content.title });
+    }
+}
+
 }

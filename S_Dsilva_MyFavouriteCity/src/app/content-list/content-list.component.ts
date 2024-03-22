@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Content } from '../helper-files/content-interface';
 import { CityService } from '../city.service';
+import { InMemoryDataService } from '../in-memory-data.service';
 
 @Component({
   selector: 'app-content-list',
@@ -15,9 +16,10 @@ export class ContentListComponent implements OnInit {
   searchMessage: string = '';
   searchMessageColor: string = '';
 
-  constructor(private cityService: CityService) {}
+  constructor(private cityService: CityService, private inMemoryDataService:InMemoryDataService) {}
 
   ngOnInit(): void {
+    this.getContents();
     this.cityService.getContentArray().subscribe(contentArray => {
       this.contentArray = contentArray;
     });
@@ -50,7 +52,41 @@ export class ContentListComponent implements OnInit {
     this.contentArray[index].highlight = true;
   }
 
-  handleImageClick(id: number, title: string): void {
-    console.log(`Clicked on image with ID: ${id}, Title: ${title}`);
+  handleImageClick(id: number | null, title: string): void {
+    if (id !== null) {
+      console.log(`Clicked on image with ID: ${id}, Title: ${title}`);
+    } else {
+      console.log(`Clicked on image with no ID, Title: ${title}`);
+    }
+  }
+  
+
+  addContentToList(newContentItem: Content): void {
+    this.cityService.addContent(newContentItem)
+    .subscribe(newContentFromServer =>
+    this.contentArray.push(newContentFromServer)
+    );
+  }
+
+  updateContentInList(contentItem: Content): void {
+    this.cityService.updateContent(contentItem)
+    .subscribe(() =>
+    console.log("Content updated successfully")
+    );
+  }    
+
+  getContents(): void {
+    this.cityService.getContent().subscribe((contents) => {
+      this.contentArray = contents;
+    });
+  }
+  handleContentAdded(content: Content): void {
+    const existingContentIndex = this.contentArray.findIndex((c) => c.id === content.id);
+
+    if (existingContentIndex !== -1) {
+      this.contentArray[existingContentIndex] = content;
+    } else {
+      this.contentArray.push(content);
+    }
   }
 }

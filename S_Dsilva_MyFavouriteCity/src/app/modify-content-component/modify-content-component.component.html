@@ -1,0 +1,9 @@
+<div>
+    <input [(ngModel)]="newContent.title" placeholder="Title" />
+    <input [(ngModel)]="newContent.description" placeholder="Description" />
+    <input [(ngModel)]="newContent.creator" placeholder="creator" />
+    <input [(ngModel)]="newContent.type" placeholder="type" />
+    
+
+    <button (click)="addOrUpdateContent()">{{ buttonText }}</button>
+</div>
